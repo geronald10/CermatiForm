@@ -1,11 +1,13 @@
 package goronald.web.id.cermatiform;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -13,6 +15,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+
+import java.lang.reflect.Array;
+import java.util.List;
 
 import goronald.web.id.cermatiform.model.Form;
 
@@ -24,6 +29,8 @@ public class FormActivity extends AppCompatActivity {
     private LinearLayout.LayoutParams mLabelLayoutParams;
     private LinearLayout.LayoutParams mFieldLayoutParams;
     private LinearLayout.LayoutParams mButtonLayoutParams;
+    private TextView tvLabel;
+    private EditText edtLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +48,6 @@ public class FormActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String jsonInString = "{\"content\":[{\"content\":[{\"required\":true,\"slug\":\"loan-amount\",\"placeholder\":\"Contoh : 50.000.000\",\"type\":\"currency\",\"label\":\"Jumlah Pinjaman\"},{\"required\":true,\"slug\":\"loan-period\",\"values\":[\"12 bulan\",\"24 bulan\",\"36 bulan\"],\"type\":\"select\",\"label\":\"Jangka Waktu Pinjaman\"},{\"required\":true,\"slug\":\"loan-purpose\",\"values\":[\"Pendidikan\",\"Kesehatan\",\"Renovasi Rumah\",\"Beli Barang Elektronik\",\"Pernikahan\",\"Liburan\"],\"type\":\"select\",\"label\":\"Tujuan Pinjaman\"},{\"required\":true,\"slug\":\"question-dbs-personal-loan\",\"values\":[\"Ya\",\"Tidak\"],\"type\":\"select\",\"label\":\"Apakah Anda pernah mengajukan aplikasi Dana Bantuan Sahabat dalam 3 bulan terakhir?\"}],\"heading\":\"Informasi Pinjaman\"}]}";
         form = gson.fromJson(jsonInString, Form.class);
-
 
         getSupportActionBar().setTitle(form.getContent().get(0).getHeading());
         setFormContent();
@@ -70,6 +76,10 @@ public class FormActivity extends AppCompatActivity {
 
                     Spinner mySpinner = new Spinner(mContext);
                     mySpinner.setLayoutParams(mFieldLayoutParams);
+                    String[] spinnerData = form.getContent().get(0).getContent().get(i).getValues().toArray(new String[0]);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String> (this,
+                            android.R.layout.simple_spinner_item, spinnerData);
+                    mySpinner.setAdapter(adapter);
 
                     mFormLayout.addView(tvLabelSpinner);
                     mFormLayout.addView(mySpinner);
@@ -83,6 +93,13 @@ public class FormActivity extends AppCompatActivity {
         mButtonLayoutParams.topMargin = 120;
 
         mFormLayout.addView(btnNext);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, OutputActivity.class);
+            }
+        });
     }
 
 
