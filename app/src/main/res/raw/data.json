@@ -1,0 +1,51 @@
+{
+   "content":[
+      {
+         "content":[
+            {
+               "required":true,
+               "slug":"loan-amount",
+               "placeholder":"Contoh : 50.000.000",
+               "type":"currency",
+               "label":"Jumlah Pinjaman"
+            },
+            {
+               "required":true,
+               "slug":"loan-period",
+               "values":[
+                  "12 bulan",
+                  "24 bulan",
+                  "36 bulan"
+               ],
+               "type":"select",
+               "label":"Jangka Waktu Pinjaman"
+            },
+            {
+               "required":true,
+               "slug":"loan-purpose",
+               "values":[
+                  "Pendidikan",
+                  "Kesehatan",
+                  "Renovasi Rumah",
+                  "Beli Barang Elektronik",
+                  "Pernikahan",
+                  "Liburan"
+               ],
+               "type":"select",
+               "label":"Tujuan Pinjaman"
+            },
+            {
+               "required":true,
+               "slug":"question-dbs-personal-loan",
+               "values":[
+                  "Ya",
+                  "Tidak"
+               ],
+               "type":"select",
+               "label":"Apakah Anda pernah mengajukan aplikasi Dana Bantuan Sahabat dalam 3 bulan terakhir?"
+            }
+         ],
+         "heading":"Informasi Pinjaman"
+      }
+   ]
+}

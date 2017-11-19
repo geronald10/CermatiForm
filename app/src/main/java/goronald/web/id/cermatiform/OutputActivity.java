@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 public class OutputActivity extends AppCompatActivity {
 
+    public static final String EXTRA_INPUT_OBJECT = "extra_input_object";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
