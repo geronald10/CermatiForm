@@ -3,6 +3,7 @@ package goronald.web.id.cermatiform.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Content implements Parcelable {
@@ -13,6 +14,12 @@ public class Content implements Parcelable {
     private String type;
     private String label;
     private String[] values;
+    private String value;
+
+    public Content(String slug, String value) {
+        this.slug = slug;
+        this.value = value;
+    }
 
     public Content(JSONObject contentObject) {
         try {
@@ -37,17 +44,24 @@ public class Content implements Parcelable {
                 setLabel(label);
             }
             if (contentObject.has("values")) {
-                String[] splittedValues = contentObject.getString("values")
-                        .trim().split(",");
-                values = new String[splittedValues.length];
-                for (int i = 0; i < splittedValues.length; i++) {
-                    values[i] = splittedValues[i];
+                JSONArray arr = contentObject.getJSONArray("values");
+                values = new String[arr.length()];
+                for (int i=0; i<arr.length(); i++) {
+                    values[i] = arr.getString(i);
                 }
                 setValues(values);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public boolean isRequired() {
@@ -111,6 +125,7 @@ public class Content implements Parcelable {
         dest.writeString(this.type);
         dest.writeString(this.label);
         dest.writeStringArray(this.values);
+        dest.writeString(this.value);
     }
 
     protected Content(Parcel in) {
@@ -120,9 +135,10 @@ public class Content implements Parcelable {
         this.type = in.readString();
         this.label = in.readString();
         this.values = in.createStringArray();
+        this.value = in.readString();
     }
 
-    public static final Parcelable.Creator<Content> CREATOR = new Parcelable.Creator<Content>() {
+    public static final Creator<Content> CREATOR = new Creator<Content>() {
         @Override
         public Content createFromParcel(Parcel source) {
             return new Content(source);
